@@ -1,15 +1,24 @@
-# Ministry of Justice Template Repository
+# modernisation-platform-terraform-trusted-advisor
 
-Use this template to [create a repository] with the default initial files for a Ministry of Justice Github repository, including:
+Terraform module to refresh [AWS Trusted Advisor](https://aws.amazon.com/premiumsupport/technology/trusted-advisor/).
 
-* The correct LICENSE
-* Github actions
-* .gitignore file
+>This uses the AWS Support API, which is only available in us-east-1.
 
-Once you have created your repository, please:
+## Usage
 
-* Edit the copy of this README.md file to document your project
-* Grant permissions to the appropriate MoJ teams
-* Setup branch protection
+```
+module "trusted-advisor" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-trusted-advisor"
+}
+```
 
-[create a repository]: https://github.com/ministryofjustice/template-repository/generate
+## Inputs
+| Name | Description                | Type | Default | Required |
+|------|----------------------------|------|---------|----------|
+| tags | Tags to apply to resources | map  | {}      | no       |
+
+## Outputs
+None.
+
+## Looking for issues?
+If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
