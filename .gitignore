@@ -1,3 +1,5 @@
 .env
 function.zip
 node_modules
+.tfsec
+.idea

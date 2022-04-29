@@ -57,6 +57,8 @@ resource "aws_iam_role" "default" {
 }
 
 # CloudWatch Log
+# Logs do not contain sensitive data
+# tfsec:ignore:aws-cloudwatch-log-group-customer-key
 resource "aws_cloudwatch_log_group" "default" {
   name              = "/aws/lambda/${local.name}"
   retention_in_days = 30
@@ -107,6 +109,8 @@ resource "aws_lambda_permission" "default" {
 }
 
 ## Create the Lambda function
+# tfsec tracing not required for this function
+# tfsec:ignore:aws-lambda-enable-tracing
 resource "aws_lambda_function" "default" {
   filename         = data.archive_file.function.output_path
   function_name    = local.name
