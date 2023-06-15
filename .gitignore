@@ -4,3 +4,5 @@ function.zip
 node_modules
 .tfsec
 .idea
+.terraform
+.terraform.lock.hcl
