@@ -1,5 +1,7 @@
-const AWS = require('aws-sdk')
-const support = new AWS.Support({
+const {
+  Support
+} = require("@aws-sdk/client-support")
+const support = new Support({
   apiVersion: '2013-04-15',
   region: 'us-east-1' // AWS Support API is only accessible from the us-east-1 region
 })
@@ -158,15 +160,15 @@ const utilities = {
   describeTrustedAdvisorChecks () {
     return support.describeTrustedAdvisorChecks({
       language: 'en'
-    }).promise().then(data => data.checks).catch(error => {
+    }).then(data => data.checks).catch(error => {
       console.log('[error] Cannot run support.describeTrustedAdvisorChecks:', error)
       throw new Error(error)
-    })
+    });
   },
   refreshTrustedAdvisorCheck (checkId) {
     return support.refreshTrustedAdvisorCheck({
       checkId: checkId
-    }).promise()
+    });
   }
 }
 

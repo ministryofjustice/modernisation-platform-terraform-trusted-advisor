@@ -116,7 +116,7 @@ resource "aws_lambda_function" "default" {
   function_name    = local.name
   handler          = "index.handler"
   role             = aws_iam_role.default.arn
-  runtime          = "nodejs16.x"
+  runtime          = "nodejs18.x"
   source_code_hash = data.archive_file.function.output_base64sha256
   timeout          = "60"
 
