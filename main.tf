@@ -126,7 +126,7 @@ resource "aws_lambda_function" "default" {
   #checkov:skip=CKV_AWS_117: "Ensure that AWS Lambda function is configured inside a VPC"
   #checkov:skip=CKV_AWS_116: "Ensure that AWS Lambda function is configured for a Dead Letter Queue(DLQ)"
   #checkov:skip=CKV_AWS_115: "Ensure that AWS Lambda function is configured for function-level concurrent execution limit"
-  
+
   filename         = data.archive_file.function.output_path
   function_name    = local.name
   handler          = "index.handler"
