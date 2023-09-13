@@ -60,6 +60,12 @@ resource "aws_iam_role" "default" {
 # Logs do not contain sensitive data
 # tfsec:ignore:aws-cloudwatch-log-group-customer-key
 resource "aws_cloudwatch_log_group" "default" {
+
+  # We use multiple KMS keys do this can't be set to one
+  #checkov:skip=CKV_AWS_158: "Ensure that CloudWatch Log Group is encrypted by KMS"
+  # We don't define how long people should keep their log groups
+  #checkov:skip=CKV_AWS_338: "Ensure CloudWatch log groups retains logs for at least 1 year"
+
   name              = "/aws/lambda/${local.name}"
   retention_in_days = 30
   tags              = var.tags
@@ -112,6 +118,14 @@ resource "aws_lambda_permission" "default" {
 # tfsec tracing not required for this function
 # tfsec:ignore:aws-lambda-enable-tracing
 resource "aws_lambda_function" "default" {
+
+  # None of the below are required
+  #checkov:skip=CKV_AWS_50: "X-ray tracing is enabled for Lambda"
+  #checkov:skip=CKV_AWS_272: "Ensure AWS Lambda function is configured to validate code-signing"
+  #checkov:skip=CKV_AWS_117: "Ensure that AWS Lambda function is configured inside a VPC"
+  #checkov:skip=CKV_AWS_116: "Ensure that AWS Lambda function is configured for a Dead Letter Queue(DLQ)"
+  #checkov:skip=CKV_AWS_115: "Ensure that AWS Lambda function is configured for function-level concurrent execution limit"
+
   filename         = data.archive_file.function.output_path
   function_name    = local.name
   handler          = "index.handler"
