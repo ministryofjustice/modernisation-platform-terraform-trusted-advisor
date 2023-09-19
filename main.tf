@@ -23,7 +23,7 @@ data "aws_iam_policy_document" "default" {
   #tfsec:ignore:aws-iam-no-policy-wildcards
   statement {
     effect = "Allow"
-    
+
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
