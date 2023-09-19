@@ -19,8 +19,11 @@ data "aws_iam_policy_document" "assume-role" {
 
 data "aws_iam_policy_document" "default" {
   # Allow the function to write logs
+  # Ignore this check on tfsec - it causes a fail on resources *. The resource * allows the lambda (below) to access groups it needs to run
+  #tfsec:ignore:aws-iam-no-policy-wildcards
   statement {
     effect = "Allow"
+    
     actions = [
       "logs:CreateLogGroup",
       "logs:CreateLogStream",
@@ -58,6 +61,7 @@ resource "aws_iam_role" "default" {
 
 # CloudWatch Log
 # Logs do not contain sensitive data
+# Ignore tfsec check. Gives a "low" error on log group not encrypted. 
 # tfsec:ignore:aws-cloudwatch-log-group-customer-key
 resource "aws_cloudwatch_log_group" "default" {
 
