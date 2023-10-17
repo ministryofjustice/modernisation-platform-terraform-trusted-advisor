@@ -73,5 +73,7 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_testing_delete_me_please"></a> [testing\_delete\_me\_please](#output\_testing\_delete\_me\_please) | Testing the docs update with the workflow |
 <!-- END_TF_DOCS -->
