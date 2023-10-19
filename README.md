@@ -70,7 +70,6 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_name"></a> [name](#input\_name) | This is used for the Lambda name and CloudWatch Log group, which is automatically created by AWS, but we can manage it via Terraform if we use the same name | `string` | `"trusted-advisor-refresh"` | no |
-| <a name="input_role_name"></a> [role\_name](#input\_role\_name) | Name of IAM role to use for Lambda Function | `string` | `"AWSTrustedAdvisorRefresh"` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to apply to resources, where applicable | `map(any)` | `{}` | no |
 
 ## Outputs
