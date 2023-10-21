@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "default" {
 
   # Support doesn't allow you to target individual resources, so we need to use *
   statement {
-    effect  = "Allow"
+    effect = "Allow"
     actions = [
       "support:DescribeTrustedAdvisorChecks",
       "support:RefreshTrustedAdvisorCheck"
