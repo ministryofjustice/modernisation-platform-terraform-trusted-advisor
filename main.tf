@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "default" {
 
   # Support doesn't allow you to target individual resources, so we need to use *
   statement {
-    effect = "Allow"
+    effect  = "Allow"
     actions = [
       "support:DescribeTrustedAdvisorChecks",
       "support:RefreshTrustedAdvisorCheck"
@@ -49,7 +49,7 @@ resource "aws_iam_role_policy_attachment" "default" {
 }
 
 resource "aws_iam_role" "default" {
-  name               = "AWSTrustedAdvisorRefresh"
+  name               = var.iam_role_name
   assume_role_policy = data.aws_iam_policy_document.assume-role.json
 }
 

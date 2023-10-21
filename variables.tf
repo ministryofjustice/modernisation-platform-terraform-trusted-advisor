@@ -4,6 +4,12 @@ variable "name" {
   default     = "trusted-advisor-refresh"
 }
 
+variable "iam_role_name" {
+  type        = string
+  description = "Name of IAM role to use for Lambda Function"
+  default     = "AWSTrustedAdvisorRefresh"
+}
+
 variable "tags" {
   type        = map(any)
   description = "Tags to apply to resources, where applicable"
