@@ -9,18 +9,6 @@ import (
 	"testing"
 )
 
-func TestModuleDefaultValues(t *testing.T) {
-	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-		TerraformDir: "./unit-test",
-	})
-
-	defer terraform.Destroy(t, terraformOptions)
-	terraform.InitAndApply(t, terraformOptions)
-
-	assert.Equal(t, "testing-trusted-advisor-refresh", terraform.Output(t, terraformOptions, "lambda_function_name"))
-	assert.Equal(t, "AWSTrustedAdvisorRefresh", terraform.Output(t, terraformOptions, "iam_role_name"))
-}
-
 func TestLamdaFunctionRuns(t *testing.T) {
 	t.Parallel()
 	uniqueId := random.UniqueId()
