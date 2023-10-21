@@ -12,7 +12,7 @@ import (
 func TestLamdaFunctionRuns(t *testing.T) {
 	t.Parallel()
 	uniqueId := random.UniqueId()
-	terraformDir := test_structure.CopyTerraformFolderToTemp(t, "../", "./unit-test")
+	terraformDir := test_structure.CopyTerraformFolderToTemp(t, "..", "test/unit-test")
 	name := "testing-trusted-advisor-refresh-" + uniqueId
 	iamRoleName := "testing-AWSTrustedAdvisorRefresh-" + uniqueId
 	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
