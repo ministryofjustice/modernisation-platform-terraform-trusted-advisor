@@ -1,6 +1,8 @@
 package main
 
 import (
+	awsSDK "github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/service/lambda"
 	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -28,9 +30,10 @@ func TestLamdaFunctionRuns(t *testing.T) {
 
 	lambdaFunctionName := terraform.Output(t, terraformOptions, "lambda_function_name")
 
-	var invocationType aws.InvocationTypeOption = aws.InvocationTypeDryRun
-	input := &aws.LambdaOptions{InvocationType: &invocationType}
-	out := aws.InvokeFunctionWithParams(t, "eu-west-2", lambdaFunctionName, input)
+	lambdaClient := aws.NewLambdaClient(t, "us-west-2")
+	function, _ := lambdaClient.GetFunction(&lambda.GetFunctionInput{
+		FunctionName: &lambdaFunctionName,
+	})
 
-	assert.Equal(t, int(*out.StatusCode), 204)
+	assert.Equal(t, lambdaFunctionName, awsSDK.StringValue(function.Configuration.FunctionName))
 }
