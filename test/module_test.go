@@ -30,7 +30,7 @@ func TestLamdaFunctionRuns(t *testing.T) {
 
 	var invocationType aws.InvocationTypeOption = aws.InvocationTypeDryRun
 	input := &aws.LambdaOptions{InvocationType: &invocationType}
-	out := aws.InvokeFunctionWithParams(t, "us-east-1", lambdaFunctionName, input)
+	out := aws.InvokeFunctionWithParams(t, "eu-west-2", lambdaFunctionName, input)
 
 	assert.Equal(t, int(*out.StatusCode), 204)
 }
