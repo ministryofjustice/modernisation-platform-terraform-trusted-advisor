@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	awsSDK "github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/lambda"
 	"github.com/gruntwork-io/terratest/modules/aws"
@@ -87,10 +86,7 @@ func TestLamdaFunctionThrows403WhenInvokedWithoutPermissions(t *testing.T) {
 
 	var invocationType aws.InvocationTypeOption = aws.InvocationTypeDryRun
 	input := &aws.LambdaOptions{InvocationType: &invocationType}
-	out, err := aws.InvokeFunctionWithParamsE(t, "eu-west-2", lambdaFunctionName, input)
-	if err != nil {
-		fmt.Println(err)
-	}
+	out, _ := aws.InvokeFunctionWithParamsE(t, "eu-west-2", lambdaFunctionName, input)
 
 	assert.Equal(t, int(*out.StatusCode), 403)
 }
