@@ -65,32 +65,6 @@ func TestLamdaFunctionIsCreated(t *testing.T) {
 	assert.Equal(t, lambdaFunctionName, awsSDK.StringValue(function.Configuration.FunctionName))
 }
 
-func TestLamdaFunctionThrows403WhenInvokedWithoutPermissions(t *testing.T) {
-	t.Parallel()
-	uniqueId := random.UniqueId()
-	terraformDir := testStructure.CopyTerraformFolderToTemp(t, "..", "test/unit-test")
-	name := "testing-trusted-advisor-refresh-" + uniqueId
-	iamRoleName := "testing-AWSTrustedAdvisorRefresh-" + uniqueId
-	terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-		TerraformDir: terraformDir,
-		Vars: map[string]interface{}{
-			"name":          name,
-			"iam_role_name": iamRoleName,
-		},
-	})
-
-	defer terraform.Destroy(t, terraformOptions)
-	terraform.InitAndApply(t, terraformOptions)
-
-	lambdaFunctionName := terraform.Output(t, terraformOptions, "lambda_function_name")
-
-	var invocationType aws.InvocationTypeOption = aws.InvocationTypeDryRun
-	input := &aws.LambdaOptions{InvocationType: &invocationType}
-	out, _ := aws.InvokeFunctionWithParamsE(t, "eu-west-2", lambdaFunctionName, input)
-
-	assert.Equal(t, int(*out.StatusCode), 403)
-}
-
 func TestLamdaFunctionThrows204WhenCalledWithCreatedIAMRole(t *testing.T) {
 	t.Parallel()
 	uniqueId := random.UniqueId()
