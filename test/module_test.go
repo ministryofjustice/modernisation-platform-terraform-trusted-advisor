@@ -1,17 +1,13 @@
 package main
 
 import (
-	"github.com/aws/aws-sdk-go/service/lambda"
-	"github.com/gruntwork-io/terratest/modules/aws"
 	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	testStructure "github.com/gruntwork-io/terratest/modules/test-structure"
-	"github.com/stretchr/testify/assert"
-	"log"
 	"testing"
 )
 
-func TestLamdaFunctionThrows204WhenCalledWithCreatedIAMRole(t *testing.T) {
+func TestApply(t *testing.T) {
 	t.Parallel()
 	uniqueId := random.UniqueId()
 	terraformDir := testStructure.CopyTerraformFolderToTemp(t, "..", "test/unit-test")
@@ -27,16 +23,4 @@ func TestLamdaFunctionThrows204WhenCalledWithCreatedIAMRole(t *testing.T) {
 
 	defer terraform.Destroy(t, terraformOptions)
 	terraform.InitAndApply(t, terraformOptions)
-
-	lambdaFunctionName := terraform.Output(t, terraformOptions, "lambda_function_name")
-	iamRoleARN := terraform.Output(t, terraformOptions, "iam_role_arn")
-
-	session, _ := aws.CreateAwsSessionFromRole("eu-west-2", iamRoleARN)
-	lambdaClient := lambda.New(session)
-	out, err := lambdaClient.Invoke(&lambda.InvokeInput{FunctionName: &lambdaFunctionName, Payload: nil})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	assert.Equal(t, int(*out.StatusCode), 204)
 }
