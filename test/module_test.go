@@ -7,6 +7,7 @@ import (
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	testStructure "github.com/gruntwork-io/terratest/modules/test-structure"
 	"github.com/stretchr/testify/assert"
+	"log"
 	"testing"
 )
 
@@ -32,7 +33,10 @@ func TestLamdaFunctionThrows204WhenCalledWithCreatedIAMRole(t *testing.T) {
 
 	session, _ := aws.CreateAwsSessionFromRole("eu-west-2", iamRoleARN)
 	lambdaClient := lambda.New(session)
-	out, _ := lambdaClient.Invoke(&lambda.InvokeInput{FunctionName: &lambdaFunctionName, Payload: nil})
+	out, err := lambdaClient.Invoke(&lambda.InvokeInput{FunctionName: &lambdaFunctionName, Payload: nil})
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	assert.Equal(t, int(*out.StatusCode), 204)
 }
