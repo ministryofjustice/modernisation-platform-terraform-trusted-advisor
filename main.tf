@@ -1,9 +1,3 @@
-# This is used for the Lambda name and CloudWatch Log group, which is automatically created by AWS
-# but we can manage it via Terraform if we use the same name
-locals {
-  name = "trusted-advisor-refresh"
-}
-
 # IAM role
 data "aws_iam_policy_document" "assume-role" {
   statement {
@@ -45,7 +39,7 @@ data "aws_iam_policy_document" "default" {
 }
 
 resource "aws_iam_policy" "default" {
-  name   = local.name
+  name   = var.name
   policy = data.aws_iam_policy_document.default.json
 }
 
@@ -55,7 +49,7 @@ resource "aws_iam_role_policy_attachment" "default" {
 }
 
 resource "aws_iam_role" "default" {
-  name               = "AWSTrustedAdvisorRefresh"
+  name               = var.iam_role_name
   assume_role_policy = data.aws_iam_policy_document.assume-role.json
 }
 
@@ -70,15 +64,15 @@ resource "aws_cloudwatch_log_group" "default" {
   # We don't define how long people should keep their log groups
   #checkov:skip=CKV_AWS_338: "Ensure CloudWatch log groups retains logs for at least 1 year"
 
-  name              = "/aws/lambda/${local.name}"
+  name              = "/aws/lambda/${var.name}"
   retention_in_days = 30
   tags              = var.tags
 }
 
 # EventBridge (previously known as CloudWatch) scheduled event
 resource "aws_cloudwatch_event_rule" "default" {
-  name                = "run-${local.name}-hourly"
-  description         = "Scheduled event for ${local.name}"
+  name                = "run-${var.name}-hourly"
+  description         = "Scheduled event for ${var.name}"
   schedule_expression = "rate(60 minutes)"
 }
 
@@ -131,7 +125,7 @@ resource "aws_lambda_function" "default" {
   #checkov:skip=CKV_AWS_115: "Ensure that AWS Lambda function is configured for function-level concurrent execution limit"
 
   filename         = data.archive_file.function.output_path
-  function_name    = local.name
+  function_name    = var.name
   handler          = "index.handler"
   role             = aws_iam_role.default.arn
   runtime          = "nodejs18.x"
